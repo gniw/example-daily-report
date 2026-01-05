@@ -27,19 +27,29 @@ npm install
 
 ### 2. 環境変数の設定
 
-`.env.local` ファイルを作成し、以下の環境変数を設定：
+`.env.example` をコピーして `.env` ファイルを作成し、必要に応じて環境変数を設定：
+
+```bash
+cp .env.example .env
+```
+
+`.env` ファイルの主な設定項目：
 
 ```env
 # Database
-DATABASE_URL="postgresql://user:password@localhost:5432/sales_report"
+DATABASE_URL="postgresql://user:password@localhost:5432/sales_daily_report"
 
-# JWT
-JWT_SECRET="your-secret-key"
-JWT_REFRESH_SECRET="your-refresh-secret-key"
+# JWT Settings
+JWT_SECRET="your-super-secret-jwt-key-change-this-in-production"
+JWT_EXPIRES_IN="3600"
+JWT_REFRESH_EXPIRES_IN="2592000"
 
-# App
-NEXT_PUBLIC_API_URL="http://localhost:3000/api"
+# Application Settings
+NODE_ENV="development"
+PORT="3000"
 ```
+
+詳細は `.env.example` を参照してください。
 
 ### 3. データベースのセットアップ
 
