@@ -7,13 +7,13 @@ pre-commit:
   commands:
     # Prettierでフォーマットチェック
     format:
-      glob: "*.{js,jsx,ts,tsx,json,css,md}"
+      glob: "**/*.{js,jsx,ts,tsx,json,css,md}"
       run: npx prettier --check {staged_files}
       stage_fixed: true
 
     # ESLintでコードチェック
     lint:
-      glob: "*.{js,jsx,ts,tsx}"
+      glob: "**/*.{js,jsx,ts,tsx}"
       run: npx eslint {staged_files}
 
     # TypeScriptの型チェック

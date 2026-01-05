@@ -40,7 +40,7 @@ model Sales {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // リレーション（今後のIssueで定義予定）
-  // customers       Customer[]     // 担当顧客
+  customers       Customer[]     // 担当顧客
   // dailyReports    DailyReport[]  // 作成した日報
   // approvedReports DailyReport[]  // 承認した日報 @relation("ApprovedBy")
   // comments        Comment[]      // 投稿したコメント
@@ -51,8 +51,44 @@ model Sales {
   @@map("sales")
 }
 
+// ============================================
+// Customer (顧客マスタ)
+// ============================================
+model Customer {
+  // 主キー
+  customerId Int @id @default(autoincrement()) @map("customer_id")
+
+  // 基本情報
+  customerName String @map("customer_name") @db.VarChar(50)
+  companyName  String @map("company_name") @db.VarChar(100)
+  industry     String @db.VarChar(50)
+  address      String? @db.VarChar(200)
+  phone        String? @db.VarChar(20)
+  email        String? @db.VarChar(100)
+
+  // 担当営業
+  salesId Int   @map("sales_id")
+  sales   Sales @relation(fields: [salesId], references: [salesId], onDelete: Restrict)
+
+  // フラグ
+  isActive Boolean @default(true) @map("is_active")
+
+  // タイムスタンプ
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // リレーション（今後のIssueで定義予定）
+  // visitRecords VisitRecord[] // 訪問記録
+
+  // インデックス
+  @@index([salesId])
+  @@index([companyName])
+  @@index([industry])
+  @@index([isActive])
+  @@map("customer")
+}
+
 // 今後追加予定のモデル：
-// - Customer (顧客マスタ) - Issue #3
 // - DailyReport (日報) - Issue #4
 // - VisitRecord (訪問記録) - Issue #5
 // - Comment (コメント) - Issue #6
