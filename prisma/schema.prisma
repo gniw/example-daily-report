@@ -10,9 +10,48 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// このファイルには基本設定のみが含まれています
-// 各テーブルのモデル定義は別のIssueで追加されます
-// - Sales (営業マスタ) - Issue #2
+// ============================================
+// Sales (営業マスタ)
+// ============================================
+model Sales {
+  // 主キー
+  salesId Int @id @default(autoincrement()) @map("sales_id")
+
+  // 基本情報
+  salesName    String   @map("sales_name") @db.VarChar(50)
+  email        String   @unique @db.VarChar(100)
+  passwordHash String   @map("password_hash") @db.VarChar(255)
+  department   String   @db.VarChar(50)
+  hireDate     DateTime @map("hire_date") @db.Date
+
+  // 組織階層（自己参照）
+  managerId Int?   @map("manager_id")
+  manager   Sales? @relation("ManagerToSubordinates", fields: [managerId], references: [salesId], onDelete: SetNull)
+
+  // 上長として管理する部下
+  subordinates Sales[] @relation("ManagerToSubordinates")
+
+  // フラグ
+  isManager Boolean @default(false) @map("is_manager")
+  isActive  Boolean @default(true) @map("is_active")
+
+  // タイムスタンプ
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // リレーション（今後のIssueで定義予定）
+  // customers       Customer[]     // 担当顧客
+  // dailyReports    DailyReport[]  // 作成した日報
+  // approvedReports DailyReport[]  // 承認した日報 @relation("ApprovedBy")
+  // comments        Comment[]      // 投稿したコメント
+
+  // インデックス
+  @@index([managerId])
+  @@index([isActive])
+  @@map("sales")
+}
+
+// 今後追加予定のモデル：
 // - Customer (顧客マスタ) - Issue #3
 // - DailyReport (日報) - Issue #4
 // - VisitRecord (訪問記録) - Issue #5
