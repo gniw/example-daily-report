@@ -1,0 +1,19 @@
+// Prisma Schema for Sales Daily Report System
+// 営業日報システムのデータベーススキーマ定義
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// このファイルには基本設定のみが含まれています
+// 各テーブルのモデル定義は別のIssueで追加されます
+// - Sales (営業マスタ) - Issue #2
+// - Customer (顧客マスタ) - Issue #3
+// - DailyReport (日報) - Issue #4
+// - VisitRecord (訪問記録) - Issue #5
+// - Comment (コメント) - Issue #6
